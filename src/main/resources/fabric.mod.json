@@ -11,7 +11,7 @@
 		"homepage": "https://github.com/Yokohama-Miyazawa",
 		"sources": "https://github.com/Yokohama-Miyazawa/MaidIllagerFabric"
 	},
-	"license": "https://github.com/Yokohama-Miyazawa/MaidIllager/blob/main/LICENSE",
+	"license": "https://github.com/Yokohama-Miyazawa/MaidIllagerFabric/blob/main/LICENSE",
 	"icon": "assets/maidillager/icon.png",
 	"environment": "*",
 	"entrypoints": {

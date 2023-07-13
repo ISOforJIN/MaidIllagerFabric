@@ -64,10 +64,11 @@
     "replace": true,
     "sounds": [
       {"name": "ambient/fun_01", "pitch": 1.0},
+      {"name": "ambient/fun_02", "pitch": 1.0},
       {"name": "ambient/fun_04", "pitch": 1.0},
+      {"name": "ambient/oi_01", "pitch": 1.0},
       {"name": "ambient/oi_02", "pitch": 1.0},
-      {"name": "ambient/shoubuda_01", "pitch": 1.0},
-      {"name": "ambient/watashigaaiteda_01", "pitch": 1.0}
+      {"name": "ambient/sokoda_02", "pitch": 1.0}
     ],
     "subtitle": "entity.pillager.ambient"
   },
@@ -103,8 +104,7 @@
       {"name": "ambient/ya_01", "pitch": 1.0},
       {"name": "ambient/ya_02", "pitch": 1.0},
       {"name": "ambient/yahhoo_01", "pitch": 1.0},
-      {"name": "ambient/yahhoo_02", "pitch": 1.0},
-      {"name": "ambient/kocchikocchi_01", "pitch": 1.0}
+      {"name": "ambient/yahhoo_02", "pitch": 1.0}
     ],
     "subtitle": "entity.vindicator.ambient"
   },
