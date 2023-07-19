@@ -2,6 +2,7 @@ package net.yokohama_miyazawa.maidillager;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.yokohama_miyazawa.maidillager.init.MaidIllagerSounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,5 +17,6 @@ public class MaidIllager implements ModInitializer {
 		// Proceed with mild caution.
 
 		LOGGER.info("Maid Illager");
+		MaidIllagerSounds.onInitialize();
 	}
 }
