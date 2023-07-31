@@ -34,11 +34,27 @@ public class MaidIllager implements ModInitializer {
 		}
 		LOGGER.info("Registries End");
 
-		//Identifier id = new Identifier("entity.pillager.ambient");
-		Identifier soundId = new Identifier(MaidIllager.MODID + ':' + "entity.pillager.ambient");
-		//Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(soundId));
-		//SoundEvents.ENTITY_PILLAGER_AMBIENT;
-		int rawId = Registries.SOUND_EVENT.getRawId(SoundEvents.ENTITY_PILLAGER_AMBIENT);
-		((MutableRegistry)Registries.SOUND_EVENT).set(rawId, RegistryKey.of(Registries.SOUND_EVENT.getKey(), SoundEvents.ENTITY_PILLAGER_AMBIENT.getId()), SoundEvent.of(soundId), Lifecycle.stable());
+		replaceVoice(SoundEvents.ENTITY_EVOKER_AMBIENT, "entity.evoker.ambient");
+		replaceVoice(SoundEvents.ENTITY_EVOKER_CELEBRATE, "entity.evoker.celebrate");
+		replaceVoice(SoundEvents.ENTITY_EVOKER_DEATH, "entity.evoker.death");
+		replaceVoice(SoundEvents.ENTITY_EVOKER_HURT, "entity.evoker.hurt");
+		replaceVoice(SoundEvents.ENTITY_ILLUSIONER_AMBIENT, "entity.illusioner.ambient");
+		replaceVoice(SoundEvents.ENTITY_ILLUSIONER_DEATH, "entity.illusioner.death");
+		replaceVoice(SoundEvents.ENTITY_ILLUSIONER_HURT, "entity.illusioner.hurt");
+		replaceVoice(SoundEvents.ENTITY_PILLAGER_AMBIENT, "entity.pillager.ambient");
+		replaceVoice(SoundEvents.ENTITY_PILLAGER_CELEBRATE, "entity.pillager.celebrate");
+		replaceVoice(SoundEvents.ENTITY_PILLAGER_DEATH, "entity.pillager.death");
+		replaceVoice(SoundEvents.ENTITY_PILLAGER_HURT, "entity.pillager.hurt");
+		replaceVoice(SoundEvents.ENTITY_VINDICATOR_AMBIENT, "entity.vindicator.ambient");
+		replaceVoice(SoundEvents.ENTITY_VINDICATOR_CELEBRATE, "entity.vindicator.celebrate");
+		replaceVoice(SoundEvents.ENTITY_VINDICATOR_DEATH, "entity.vindicator.death");
+		replaceVoice(SoundEvents.ENTITY_VINDICATOR_HURT, "entity.vindicator.hurt");
+	}
+
+	private void replaceVoice(SoundEvent eventReplaced, String newVoicePath) {
+		int rawId = Registries.SOUND_EVENT.getRawId(eventReplaced);
+		RegistryKey<SoundEvent> key = RegistryKey.of(Registries.SOUND_EVENT.getKey(), eventReplaced.getId());
+		SoundEvent newVoice = SoundEvent.of(new Identifier(MODID + ':' + newVoicePath));
+		((MutableRegistry<SoundEvent>)Registries.SOUND_EVENT).set(rawId, key, newVoice, Lifecycle.stable());
 	}
 }
