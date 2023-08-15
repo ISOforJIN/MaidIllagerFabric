@@ -2,13 +2,13 @@
 	"schemaVersion": 1,
 	"id": "maidillager",
 	"version": "${version}",
-	"name": "MaidIllagerFabric",
+	"name": "MaidIllager",
 	"description": "邪悪な村人の見た目を若干変えるMOD\nあみたろの声素材工房様(https://amitaro.net/)の音声を使用しています",
 	"authors": [
 		"Yokohama-Miyazawa"
 	],
 	"contact": {
-		"homepage": "https://github.com/Yokohama-Miyazawa",
+		"homepage": "https://github.com/Yokohama-Miyazawa/MaidIllagerFabric/wiki",
 		"sources": "https://github.com/Yokohama-Miyazawa/MaidIllagerFabric"
 	},
 	"license": "https://github.com/Yokohama-Miyazawa/MaidIllagerFabric/blob/main/LICENSE",
