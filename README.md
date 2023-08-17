@@ -4,7 +4,7 @@
 邪悪な村人の見た目が若干変わるMOD(Fabric版)
 
 ## 対応バージョン
-[Wiki参照](https://github.com/yokohama-Miyazawa/maidIllagerFabric/wiki)
+[Wiki参照](https://github.com/yokohama-Miyazawa/maidIllagerFabric/wiki#対応バージョン)
 
 ## 注意
 - このMODは開発中です。導入は自己責任でお願いします。
