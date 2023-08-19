@@ -8,6 +8,7 @@
 		"MixinEvokerRenderer",
 		"MixinIllusionerRenderer",
 		"MixinIllagerModel",
-		"IllagerModelAccessor"
+		"IllagerModelAccessor",
+		"MixinIllagerEntity"
 	]
 }
