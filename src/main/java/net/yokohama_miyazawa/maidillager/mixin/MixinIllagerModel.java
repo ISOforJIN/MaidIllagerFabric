@@ -5,8 +5,10 @@ import net.minecraft.client.render.entity.model.IllagerEntityModel;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.mob.IllagerEntity;
+import net.minecraft.entity.mob.EvokerEntity;
 import net.minecraft.entity.mob.IllusionerEntity;
 import net.minecraft.entity.mob.PillagerEntity;
+import net.minecraft.entity.mob.VindicatorEntity;
 import net.minecraft.util.Arm;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,10 +20,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(IllagerEntityModel.class)
 public class MixinIllagerModel {
 
-    private ModelPart hire;
-    private ModelPart sideburns;
     private ModelPart chignonB;
     private ModelPart tail;
+    private ModelPart hair;
+    private ModelPart forelock;
     private ModelPart blinkEyeR;
     private ModelPart blinkEyeL;
     private ModelPart hurtEyeR;
@@ -32,10 +34,10 @@ public class MixinIllagerModel {
     @Inject(method = "<init>", at = @At("TAIL"))
     private void init(ModelPart root, CallbackInfo cir) {
         ModelPart head = ((IllagerEntityModel)(Object)this).getHead();
-        this.hire = head.getChild("hire");
-        this.sideburns = head.getChild("sideburns");
         this.chignonB = head.getChild("chignonB");
         this.tail = head.getChild("tail");
+        this.hair = head.getChild("hair");
+        this.forelock = head.getChild("forelock");
         this.blinkEyeR = head.getChild("blinkEyeR");
         this.blinkEyeL = head.getChild("blinkEyeL");
         this.hurtEyeR = head.getChild("hurtEyeR");
@@ -43,10 +45,9 @@ public class MixinIllagerModel {
         this.mouth = head.getChild("mouth");
         this.Skirt = root.getChild("Skirt");
 
-        this.hire.visible = false;
-        this.sideburns.visible = false;
         this.chignonB.visible = false;
         this.tail.visible = false;
+        this.forelock.visible = false;
         this.blinkEyeR.visible = false;
         this.blinkEyeL.visible = false;
         this.hurtEyeR.visible = false;
@@ -69,10 +70,10 @@ public class MixinIllagerModel {
         float heightOffset = 8.0F;
 
         ModelPartData head = modelPartData.addChild("head", ModelPartBuilder.create().uv(0, 0).cuboid(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F), ModelTransform.pivot(0.0F, 0.0F+heightOffset, 0.0F));
-        head.addChild("hire", ModelPartBuilder.create().uv(24, 0).cuboid(-4.0F, 0.0F, 1.0F, 8.0F, 4.0F, 3.0F), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
-        head.addChild("sideburns", ModelPartBuilder.create().uv(24, 0).cuboid(-4.0F, 0.0F, -4.0F, 8.0F, 1.0F, 1.0F), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
         head.addChild("chignonB", ModelPartBuilder.create().uv(52, 10).cuboid(-2.0F, -7.2F, 4.0F, 4.0F, 4.0F, 2.0F), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
         head.addChild("tail", ModelPartBuilder.create().uv(46, 20).cuboid(-1.5F, -7.8F, 4.0F, 3.0F, 9.0F, 3.0F), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
+        head.addChild("hair", ModelPartBuilder.create().uv(0, 32).cuboid(-4.0F, -8.0F, -4.0F, 8.0F, 12.0F, 8.0F, new Dilation(0.25F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
+        head.addChild("forelock", ModelPartBuilder.create().uv(44, 33).cuboid(-4.0F, -8.0F, -4.5F, 8.0F, 4.0F, 2.0F, new Dilation(0.3F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
         head.addChild("blinkEyeR", ModelPartBuilder.create().uv(4, 0).cuboid(-3.0F, -4.0F, -4.01F, 2.0F, 3.0F, 0.0F), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
         head.addChild("blinkEyeL", ModelPartBuilder.create().uv(4, 0).mirrored().cuboid(1.0F, -4.0F, -4.01F, 2.0F, 3.0F, 0.0F).mirrored(false), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
         head.addChild("hurtEyeR", ModelPartBuilder.create().uv(0, 0).cuboid(-3.0F, -4.0F, -4.01F, 2.0F, 3.0F, 0.0F), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
@@ -90,7 +91,7 @@ public class MixinIllagerModel {
         head.addChild("hat", ModelPartBuilder.create().uv(0, 0).cuboid(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
         modelPartData.addChild("arms", ModelPartBuilder.create().uv(32, 8).cuboid(-3.0F, 0.0F, -2.0F, 6.0F, 7.0F, 4.0F), ModelTransform.pivot(0.0F, 0.0F+heightOffset, 0.0F));
 
-        cir.setReturnValue(TexturedModelData.of(modelData, 64, 32));
+        cir.setReturnValue(TexturedModelData.of(modelData, 64, 64));
     }
 
     @Inject(method = "setAngles", at = @At("HEAD"), cancellable = true)
@@ -103,9 +104,9 @@ public class MixinIllagerModel {
         if (entity instanceof PillagerEntity || entity instanceof IllusionerEntity) {
             this.chignonB.visible = true;
             this.tail.visible = true;
-        } else {
-            this.sideburns.visible = true;
-            this.hire.visible = true;
+        }
+        if (entity instanceof EvokerEntity || entity instanceof PillagerEntity) {
+            this.forelock.visible = true;
         }
 
         ModelPart head = ((IllagerEntityModel)(Object)this).getHead();
@@ -160,7 +161,9 @@ public class MixinIllagerModel {
                     this.hurtEyeR.visible = true;
                     this.hurtEyeL.visible = true;
                 }
-                this.mouth.visible = true;
+                if (entity instanceof PillagerEntity || entity instanceof VindicatorEntity || entity.getId() % 2 == 0) {
+                    this.mouth.visible = true;
+                }
             } else if (this.shouldBlink(entity, ageInTicks)) {  // 瞬き
                 this.hurtEyeR.visible = false;
                 this.hurtEyeL.visible = false;
