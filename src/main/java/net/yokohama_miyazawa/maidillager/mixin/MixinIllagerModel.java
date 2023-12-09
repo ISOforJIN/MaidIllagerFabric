@@ -197,4 +197,13 @@ public class MixinIllagerModel {
         part.yaw = yAngle;
         part.roll = zAngle;
     }
+
+    // 腕と武器の位置関係を調整
+    @Inject(method = "setArmAngle", at = @At("TAIL"), cancellable = true)
+    private void onSetArmAngle(net.minecraft.util.Arm arm, net.minecraft.client.util.math.MatrixStack matrices, CallbackInfo cir) {
+        double dx = (arm == net.minecraft.util.Arm.LEFT) ? -0.05 : 0.05;
+        double dy = -0.1;
+        double dz = 0.04;
+        matrices.translate(dx, dy, dz);
+    }
 }
