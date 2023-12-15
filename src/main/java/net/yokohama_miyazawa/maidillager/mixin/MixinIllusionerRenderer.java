@@ -11,10 +11,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import net.minecraft.util.Identifier;
 
+import static net.yokohama_miyazawa.maidillager.config.ModConfigs.UMU_LIKE;
+
 @Environment(EnvType.CLIENT)
 @Mixin(IllusionerEntityRenderer.class)
 public class MixinIllusionerRenderer {
-    private static final Identifier ILLUSIONER = new Identifier(MaidIllager.MODID + ":textures/entity/maid_illusioner.png");
+    private static final String TEXTURE = UMU_LIKE ? ":textures/entity/maid_illusioner_umu.png" : ":textures/entity/maid_illusioner.png";
+    private static final Identifier ILLUSIONER = new Identifier(MaidIllager.MODID + TEXTURE);
 
     @Inject(method = "getTexture", at = @At("RETURN"), cancellable = true)
     public void onGetTexture(IllusionerEntity entity, CallbackInfoReturnable<Identifier> cir){
