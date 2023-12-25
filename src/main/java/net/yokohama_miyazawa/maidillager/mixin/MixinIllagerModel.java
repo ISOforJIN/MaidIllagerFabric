@@ -140,9 +140,27 @@ public class MixinIllagerModel {
                 this.setAngle(rightArm, 0.0F, 0.0F, (float)Math.PI * (2.0F / 3.0F));
                 this.setAngle(leftArm, 0.0F, 0.0F, -(float)Math.PI * (2.0F / 3.0F));
             }
-            case BOW_AND_ARROW, CROSSBOW_HOLD, CROSSBOW_CHARGE -> {
+            case BOW_AND_ARROW -> {
                 this.setAngle(rightArm, -(float)Math.PI / 2.0F + head.pitch, -(float)Math.PI / 15.0F, 0.0F);
                 this.setAngle(leftArm, -(float)Math.PI / 2.0F + head.pitch, (float)Math.PI / 15.0F, 0.0F);
+            }
+            case CROSSBOW_CHARGE -> {
+                if (entity.getMainArm() == Arm.LEFT) {
+                    this.setAngle(rightArm, -(float)Math.PI / 2.5F, -(float)Math.PI / 5.0F, 0.0F);
+                    this.setAngle(leftArm, -(float)Math.PI / 3.0F, (float)Math.PI / 5.0F, 0.0F);
+                } else {
+                    this.setAngle(rightArm, -(float)Math.PI / 3.0F, -(float)Math.PI / 5.0F, 0.0F);
+                    this.setAngle(leftArm, -(float)Math.PI / 2.5F, (float)Math.PI / 5.0F, 0.0F);
+                }
+            }
+            case CROSSBOW_HOLD -> {
+                if (entity.getMainArm() == Arm.LEFT) {
+                    this.setAngle(rightArm, -(float)Math.PI / 2.0F + head.pitch, -(float)Math.PI / 4.5F, 0.0F);
+                    this.setAngle(leftArm, -(float)Math.PI / 2.0F + head.pitch, (float)Math.PI / 10.0F, 0.0F);
+                } else {
+                    this.setAngle(rightArm, -(float)Math.PI / 2.0F + head.pitch, -(float)Math.PI / 10.0F, 0.0F);
+                    this.setAngle(leftArm, -(float)Math.PI / 2.0F + head.pitch, (float)Math.PI / 4.5F, 0.0F);
+                }
             }
             case CELEBRATING -> {
                 this.setAngle(rightArm, 0.0F, 0.0F, (float)Math.PI * (5.0F / 6.0F));
