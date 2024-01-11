@@ -35,7 +35,7 @@ public class ModConfigProvider implements SimpleConfig.DefaultConfig {
         return configsList.values().stream().toList();
     }
 
-    private final HashMap<String, ConfigRow> configsList = new HashMap<>();
+    public final HashMap<String, ConfigRow> configsList = new HashMap<>();
 
     public void addKeyValue(ConfigRow<?> keyValue) {
         configsList.put(keyValue.key, keyValue);
@@ -45,8 +45,10 @@ public class ModConfigProvider implements SimpleConfig.DefaultConfig {
     public void setKeyValue(ConfigRow<?> keyValue) {
         if (configsList.containsKey(keyValue.key)) {
             configsList.replace(keyValue.key, keyValue);
-            updateContents();
+        } else {
+            configsList.put(keyValue.key, keyValue);
         }
+        updateContents();
     }
 
     public void updateContents() {

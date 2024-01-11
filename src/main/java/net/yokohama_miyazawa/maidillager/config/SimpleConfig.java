@@ -121,10 +121,12 @@ public class SimpleConfig {
         }
     }
 
-    private void saveConfig(String writeContent) throws IOException {
+    public void saveConfig(String writeContent) throws IOException {
         PrintWriter writer = new PrintWriter(request.file, "UTF-8");
         writer.write(writeContent);
         writer.close();
+
+        loadConfig();
     }
 
     // Modification by Kaupenjoe

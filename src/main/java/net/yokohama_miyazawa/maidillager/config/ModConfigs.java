@@ -23,11 +23,16 @@ package net.yokohama_miyazawa.maidillager.config;
  * SOFTWARE.
  */
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.yokohama_miyazawa.maidillager.MaidIllager;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
 public class ModConfigs {
     public static SimpleConfig CONFIG;
-    public static ModConfigProvider configs;
+    private static ModConfigProvider configs;
 
     public static Boolean UMU_LIKE;
     public static void registerConfigs() {
@@ -40,12 +45,25 @@ public class ModConfigs {
     }
 
     private static void createConfigs() {
-        configs.addKeyValue(new ConfigRow<Boolean>("umuLike", false));
+        configs.addKeyValue(new ConfigRow<Boolean>("umuLike", false, "Boolean"));
     }
 
     private static void assignConfigs() {
         UMU_LIKE = CONFIG.getOrDefault("umuLike", false);
 
         System.out.println("All " + configs.getConfigsList().size() + " have been set properly");
+    }
+
+    public static void setConfigRow(ConfigRow<?> configRow) {
+        configs.setKeyValue(configRow);
+    }
+
+    public static HashMap<String, ConfigRow> getConfigRows() {
+        return configs.configsList;
+    }
+
+    public static void saveConfig() throws IOException {
+        CONFIG.saveConfig(configs.get(""));
+        assignConfigs();
     }
 }
