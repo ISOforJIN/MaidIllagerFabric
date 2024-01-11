@@ -27,9 +27,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -121,6 +119,12 @@ public class SimpleConfig {
         for( int line = 1; reader.hasNextLine(); line ++ ) {
             parseConfigEntry( reader.nextLine(), line );
         }
+    }
+
+    private void saveConfig(String writeContent) throws IOException {
+        PrintWriter writer = new PrintWriter(request.file, "UTF-8");
+        writer.write(writeContent);
+        writer.close();
     }
 
     // Modification by Kaupenjoe

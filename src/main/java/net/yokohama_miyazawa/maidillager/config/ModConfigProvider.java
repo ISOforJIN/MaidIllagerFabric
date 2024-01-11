@@ -23,25 +23,38 @@ package net.yokohama_miyazawa.maidillager.config;
  * SOFTWARE.
  */
 
-import com.mojang.datafixers.util.Pair;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ModConfigProvider implements SimpleConfig.DefaultConfig {
 
     private String configContents = "";
 
-    public List<Pair> getConfigsList() {
-        return configsList;
+    public List<ConfigRow> getConfigsList() {
+        return configsList.values().stream().toList();
     }
 
-    private final List<Pair> configsList = new ArrayList<>();
+    private final HashMap<String, ConfigRow> configsList = new HashMap<>();
 
-    public void addKeyValuePair(Pair<String, ?> keyValuePair, String comment) {
-        configsList.add(keyValuePair);
-        configContents += keyValuePair.getFirst() + "=" + keyValuePair.getSecond() + " #"
-                + comment + " | default: " + keyValuePair.getSecond() + "\n";
+    public void addKeyValue(ConfigRow<?> keyValue) {
+        configsList.put(keyValue.key, keyValue);
+        updateContents();
+    }
+
+    public void setKeyValue(ConfigRow<?> keyValue) {
+        if (configsList.containsKey(keyValue.key)) {
+            configsList.replace(keyValue.key, keyValue);
+            updateContents();
+        }
+    }
+
+    public void updateContents() {
+        configContents = "";
+        configsList.forEach((key, keyValue) -> {
+            configContents += keyValue.key + "=" + keyValue.value + " #"
+                    + keyValue.description + " | default: " + keyValue.value + "\n";
+        });
     }
 
     @Override
