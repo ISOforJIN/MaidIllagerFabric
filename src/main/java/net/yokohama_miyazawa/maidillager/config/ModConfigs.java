@@ -52,6 +52,7 @@ public class ModConfigs {
         UMU_LIKE = CONFIG.getOrDefault("umuLike", false);
 
         System.out.println("All " + configs.getConfigsList().size() + " have been set properly");
+        System.out.println(CONFIG.getOrDefault("umuLike", false));
     }
 
     public static void setConfigRow(ConfigRow<?> configRow) {
