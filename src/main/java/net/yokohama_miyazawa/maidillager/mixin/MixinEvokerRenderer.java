@@ -17,10 +17,10 @@ import static net.yokohama_miyazawa.maidillager.config.ModConfigs.UMU_LIKE;
 @Mixin(EvokerEntityRenderer.class)
 public class MixinEvokerRenderer<T extends SpellcastingIllagerEntity> {
     private static final String TEXTURE() {return UMU_LIKE ? ":textures/entity/maid_evoker_umu.png" : ":textures/entity/maid_evoker.png";};
-    private static final Identifier EVOKER_ILLAGER = new Identifier(MaidIllager.MODID + TEXTURE());
+    private static final Identifier EVOKER_ILLAGER() {return new Identifier(MaidIllager.MODID + TEXTURE());}
 
     @Inject(method = "getTexture", at = @At("RETURN"), cancellable = true)
     public void onGetTexture(T entity, CallbackInfoReturnable<Identifier> cir){
-        cir.setReturnValue(EVOKER_ILLAGER);
+        cir.setReturnValue(EVOKER_ILLAGER());
     }
 }

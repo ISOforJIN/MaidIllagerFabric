@@ -17,10 +17,10 @@ import static net.yokohama_miyazawa.maidillager.config.ModConfigs.UMU_LIKE;
 @Mixin(VindicatorEntityRenderer.class)
 public class MixinVindicatorRenderer {
     private static final String TEXTURE() {return UMU_LIKE ? ":textures/entity/maid_vindicator_umu.png" : ":textures/entity/maid_vindicator.png";}
-    private static final Identifier VINDICATOR = new Identifier(MaidIllager.MODID + TEXTURE());
+    private static final Identifier VINDICATOR() {return new Identifier(MaidIllager.MODID + TEXTURE());}
 
     @Inject(method = "getTexture", at = @At("RETURN"), cancellable = true)
     public void onGetTexture(VindicatorEntity vindicatorEntity, CallbackInfoReturnable<Identifier> cir){
-        cir.setReturnValue(VINDICATOR);
+        cir.setReturnValue(VINDICATOR());
     }
 }
