@@ -9,6 +9,7 @@
 		"MixinIllusionerRenderer",
 		"MixinIllagerModel",
 		"IllagerModelAccessor",
-		"MixinIllagerEntity"
+		"MixinIllagerEntity",
+      	"MixinSoundSystem"
 	]
 }
