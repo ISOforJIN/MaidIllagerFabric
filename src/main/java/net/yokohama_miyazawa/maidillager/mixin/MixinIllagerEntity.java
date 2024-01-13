@@ -13,8 +13,8 @@ public abstract class MixinIllagerEntity extends LivingEntity {
     }
 
     // 邪悪なメイドの音声ピッチを固定する
-    @Override
-    public float getSoundPitch() {
-        return 1.0f;
-    }
+//    @Override
+//    public float getSoundPitch() {
+//        return 1.0f;
+//    }
 }
