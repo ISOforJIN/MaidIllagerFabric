@@ -1,8 +1,8 @@
 {
   "title.maidillager.config": "MaidIllager Config",
-  "title.maidillager.viewconfig": "MaidIllager Appearance Settings",
-  "maidillager.modconfiggui.viewconfigbtn": "Appearance Settings",
-  "maidillager.modconfiggui.exitbtn": "Close",
+  "title.maidillager.appearanceconfig": "MaidIllager Appearance Settings",
+  "maidillager.modconfiggui.appearanceconfigbtn": "Appearance Settings",
+  "maidillager.modconfiggui.closebtn": "Close",
   "category.maidillager.general": "General",
   "option.maidillager.umulike": "Is texture like UMU Little Maid?"
 }

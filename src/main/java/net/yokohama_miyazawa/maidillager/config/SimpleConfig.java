@@ -41,9 +41,9 @@ public class SimpleConfig {
     private boolean broken = false;
 
     public interface DefaultConfig {
-        String get( String namespace );
+        String get();
 
-        static String empty( String namespace ) {
+        static String empty() {
             return "";
         }
     }
@@ -84,7 +84,7 @@ public class SimpleConfig {
         }
 
         private String getConfig() {
-            return provider.get( filename ) + "\n";
+            return provider.get() + "\n";
         }
 
     }

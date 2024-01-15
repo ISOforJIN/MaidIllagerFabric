@@ -60,7 +60,7 @@ public class ModConfigProvider implements SimpleConfig.DefaultConfig {
     }
 
     @Override
-    public String get(String namespace) {
+    public String get() {
         return configContents;
     }
 }

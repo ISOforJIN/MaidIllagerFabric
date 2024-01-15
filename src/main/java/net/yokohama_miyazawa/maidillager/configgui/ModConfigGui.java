@@ -1,5 +1,6 @@
 package net.yokohama_miyazawa.maidillager.configgui;
 
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -18,20 +19,16 @@ public class ModConfigGui extends Screen {
     protected void init() {
         super.init();
 
-        ButtonWidget viewConfigButton = ButtonWidget.builder(Text.translatable("maidillager.modconfiggui.viewconfigbtn"), (b) -> {
-                    client.setScreen(new ModViewConfig(this).getScreen());
-        })
-                .dimensions(this.width / 2 - (260 / 2), this.height / 4, 260, 20)
-                .build();
+        ButtonWidget appearanceConfigButton = new ConfigButton(this.width / 2 - (200 / 2), this.height / 4, 200, 20, Config.VIEW, this);
 
-        ButtonWidget exitButton = ButtonWidget.builder(Text.translatable("maidillager.modconfiggui.exitbtn"), (b) -> {
+        ButtonWidget closeButton = ButtonWidget.builder(Text.translatable("maidillager.modconfiggui.closebtn"), (b) -> {
             close();
         })
-                .dimensions(this.width / 2 - (260 / 2), this.height - 50, 260, 20)
+                .dimensions(this.width / 2 - (200 / 2), this.height - 50, 200, 20)
                 .build();
 
-        addDrawableChild(viewConfigButton);
-        addDrawableChild(exitButton);
+        addDrawableChild(appearanceConfigButton);
+        addDrawableChild(closeButton);
     }
 
     @Override
@@ -44,5 +41,41 @@ public class ModConfigGui extends Screen {
     @Override
     public void close() {
         client.setScreen(parent);
+    }
+
+    enum Config {
+        VIEW
+    }
+
+    class ConfigButton extends ButtonWidget {
+        Config config;
+        Screen currentScreen;
+
+        protected ConfigButton(int x, int y, int width, int height, Config config, Screen currentScreen) {
+            super(x, y, width, height, null, null, DEFAULT_NARRATION_SUPPLIER);
+
+            this.config = config;
+            this.currentScreen = currentScreen;
+
+            Text message;
+            switch (this.config) {
+                case VIEW:
+                    message = Text.translatable("maidillager.modconfiggui.appearanceconfigbtn");
+                    break;
+                default:
+                    message = Text.literal("config unknown");
+                    break;
+            }
+            this.setMessage(message);
+        }
+
+        @Override
+        public void onPress() {
+            switch (this.config) {
+                case VIEW:
+                    MinecraftClient.getInstance().setScreen(new ModAppearanceConfig(this.currentScreen).getScreen());
+                    break;
+            }
+        }
     }
 }

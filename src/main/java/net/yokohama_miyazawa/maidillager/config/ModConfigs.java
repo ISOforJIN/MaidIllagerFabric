@@ -24,6 +24,10 @@ package net.yokohama_miyazawa.maidillager.config;
  */
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.scoreboard.Scoreboard;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.world.World;
 import net.yokohama_miyazawa.maidillager.MaidIllager;
 
 import java.io.IOException;
@@ -52,7 +56,6 @@ public class ModConfigs {
         UMU_LIKE = CONFIG.getOrDefault("umuLike", false);
 
         System.out.println("All " + configs.getConfigsList().size() + " have been set properly");
-        System.out.println(CONFIG.getOrDefault("umuLike", false));
     }
 
     public static void setConfigRow(ConfigRow<?> configRow) {
@@ -64,7 +67,7 @@ public class ModConfigs {
     }
 
     public static void saveConfig() throws IOException {
-        CONFIG.saveConfig(configs.get(""));
+        CONFIG.saveConfig(configs.get());
         assignConfigs();
     }
 }
