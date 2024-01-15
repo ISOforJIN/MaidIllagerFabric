@@ -1,11 +1,19 @@
 package net.yokohama_miyazawa.maidillager.mixin;
 
-import net.minecraft.client.sound.SoundInstance;
-import net.minecraft.client.sound.SoundSystem;
+import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+import net.minecraft.client.sound.*;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.floatprovider.ConstantFloatProvider;
+import net.minecraft.util.math.random.Random;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
@@ -35,4 +43,77 @@ public abstract class MixinSoundSystem {
             info.setReturnValue(1.0f);
         }
     }
+
+//    @Inject(method = "play(Lnet/minecraft/client/sound/SoundInstance;)V", at = @At("HEAD"))
+//    protected void onPlay(CallbackInfo ci, @Local LocalRef<SoundInstance> sound) {
+//        WeightedSoundSet soundSet = new WeightedSoundSet(SoundEvents.UI_BUTTON_CLICK.value().getId(), (String) null);
+//        Sound newSound = new Sound(SoundEvents.UI_BUTTON_CLICK.value().getId().toString(), ConstantFloatProvider.create(1.0f), ConstantFloatProvider.create(1.0f), 1, Sound.RegistrationType.FILE, false, true, 16);
+//        sound.set(new SoundInstance() {
+//            @Override
+//            public Identifier getId() {
+//                return newSound.getIdentifier();
+//            }
+//
+//            @Nullable
+//            @Override
+//            public WeightedSoundSet getSoundSet(SoundManager soundManager) {
+//                return soundSet;
+//            }
+//
+//            @Override
+//            public Sound getSound() {
+//                return newSound;
+//            }
+//
+//            @Override
+//            public SoundCategory getCategory() {
+//                return SoundCategory.AMBIENT;
+//            }
+//
+//            @Override
+//            public boolean isRepeatable() {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean isRelative() {
+//                return false;
+//            }
+//
+//            @Override
+//            public int getRepeatDelay() {
+//                return 0;
+//            }
+//
+//            @Override
+//            public float getVolume() {
+//                return newSound.getVolume().get(Random.create());
+//            }
+//
+//            @Override
+//            public float getPitch() {
+//                return newSound.getPitch().get(Random.create());
+//            }
+//
+//            @Override
+//            public double getX() {
+//                return 0;
+//            }
+//
+//            @Override
+//            public double getY() {
+//                return 0;
+//            }
+//
+//            @Override
+//            public double getZ() {
+//                return 0;
+//            }
+//
+//            @Override
+//            public AttenuationType getAttenuationType() {
+//                return null;
+//            }
+//        });
+//    }
 }

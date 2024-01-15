@@ -10,13 +10,13 @@ import net.yokohama_miyazawa.maidillager.config.ModConfigs;
 
 import java.io.IOException;
 
-public class ModViewConfig {
+public class ModAppearanceConfig {
     ConfigBuilder builder;
 
-    public ModViewConfig(Screen parent) {
+    public ModAppearanceConfig(Screen parent) {
         builder = ConfigBuilder.create()
                 .setParentScreen(parent)
-                .setTitle(Text.translatable("title.maidillager.viewconfig"));
+                .setTitle(Text.translatable("title.maidillager.appearanceconfig"));
 
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
         ConfigCategory generalCategory = builder.getOrCreateCategory(Text.translatable("category.maidillager.general"));

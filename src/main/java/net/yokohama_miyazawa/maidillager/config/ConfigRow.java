@@ -19,16 +19,16 @@ public class ConfigRow<T> {
     public static class Builder<T> {
         String key;
         T value;
-        String description = "";
-
-        public Builder() {
-
-        }
+        String description;
 
         public Builder(String key, T value, String description) {
             this.key = key;
             this.value = value;
             this.description = description;
+        }
+
+        public static Builder create() {
+            return new Builder("", null, "");
         }
 
         public static Builder clone(ConfigRow configRow) {
