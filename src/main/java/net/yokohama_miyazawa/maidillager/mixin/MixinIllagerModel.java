@@ -10,7 +10,6 @@ import net.minecraft.entity.mob.IllusionerEntity;
 import net.minecraft.entity.mob.PillagerEntity;
 import net.minecraft.entity.mob.VindicatorEntity;
 import net.minecraft.util.Arm;
-import org.joml.Quaternionf;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -31,11 +30,6 @@ public class MixinIllagerModel {
     private ModelPart hurtEyeL;
     private ModelPart mouth;
     private ModelPart Skirt;
-
-    // オリジナルとの身長差分、体全体を下にずらす
-    private static final float heightOffset = 8.0F;
-    // ラヴェジャー等に乗っている時は、少しだけ下半身がめり込む程度に位置を補正する
-    private static final float ridingOffset = heightOffset - 2.0F;
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void init(ModelPart root, CallbackInfo cir) {
@@ -71,6 +65,9 @@ public class MixinIllagerModel {
     private static void onCreateBodyLayer(CallbackInfoReturnable<TexturedModelData> cir) {
         ModelData modelData = new ModelData();
         ModelPartData modelPartData = modelData.getRoot();
+
+        // オリジナルとの身長差分、体全体を下にずらす
+        float heightOffset = 8.0F;
 
         ModelPartData head = modelPartData.addChild("head", ModelPartBuilder.create().uv(0, 0).cuboid(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F), ModelTransform.pivot(0.0F, 0.0F+heightOffset, 0.0F));
         head.addChild("chignonB", ModelPartBuilder.create().uv(52, 10).cuboid(-2.0F, -7.2F, 4.0F, 4.0F, 4.0F, 2.0F), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
@@ -112,7 +109,6 @@ public class MixinIllagerModel {
             this.forelock.visible = true;
         }
 
-        ModelPart root = ((IllagerEntityModel)(Object)this).getPart();
         ModelPart head = ((IllagerEntityModel)(Object)this).getHead();
         head.yaw = netHeadYaw * ((float)Math.PI / 180F);
         head.pitch = headPitch * ((float)Math.PI / 180F);
@@ -121,15 +117,13 @@ public class MixinIllagerModel {
         ModelPart leftArm  = ((IllagerModelAccessor) (Object)this).getLeftArm();
         ModelPart rightLeg = ((IllagerModelAccessor) (Object)this).getRightLeg();
         ModelPart leftLeg  = ((IllagerModelAccessor) (Object)this).getLeftLeg();
-
+        // TODO: ラヴェジャーに乗っている時に下半身がめり込むのを解消する
         if (((IllagerEntityModel)(Object)this).riding) {  // ラヴェジャーに乗っている時
-            root.pivotY = -ridingOffset;
             this.setAngle(rightArm, -0.6283185F, 0.0F, 0.0F);
             this.setAngle(leftArm, -0.6283185F, 0.0F, 0.0F);
             this.setAngle(rightLeg, -1.256637F, 0.3141593F, 0.0F);
             this.setAngle(leftLeg, -1.256637F, -0.3141593F, 0.0F);
         } else {
-            root.pivotY = 0.0F;
             float xAngle = (float)Math.cos(limbSwing * 0.6662) * 2.0F * limbSwingAmount * 0.5F;
             float defaultZAngle = (float)Math.PI / 5.0F;
             float zSwing = ((float)Math.PI / 40.0F) * (float)Math.sin(3.0F * ageInTicks * ((float)Math.PI / 180F));
@@ -146,21 +140,9 @@ public class MixinIllagerModel {
                 this.setAngle(rightArm, 0.0F, 0.0F, (float)Math.PI * (2.0F / 3.0F));
                 this.setAngle(leftArm, 0.0F, 0.0F, -(float)Math.PI * (2.0F / 3.0F));
             }
-            case BOW_AND_ARROW -> {
+            case BOW_AND_ARROW, CROSSBOW_HOLD, CROSSBOW_CHARGE -> {
                 this.setAngle(rightArm, -(float)Math.PI / 2.0F + head.pitch, -(float)Math.PI / 15.0F, 0.0F);
                 this.setAngle(leftArm, -(float)Math.PI / 2.0F + head.pitch, (float)Math.PI / 15.0F, 0.0F);
-            }
-            case CROSSBOW_CHARGE -> {
-                float xAngle_right = (entity.getMainArm() == Arm.LEFT) ? -(float)Math.PI / 2.5F : -(float)Math.PI / 3.0F;
-                float xAngle_left  = (entity.getMainArm() == Arm.LEFT) ? -(float)Math.PI / 3.0F : -(float)Math.PI / 2.5F;
-                this.setAngle(rightArm, xAngle_right, -(float)Math.PI / 5.0F, 0.0F);
-                this.setAngle(leftArm, xAngle_left, (float)Math.PI / 5.0F, 0.0F);
-            }
-            case CROSSBOW_HOLD -> {
-                float yAngle_right = (entity.getMainArm() == Arm.LEFT) ? -(float)Math.PI / 4.5F : -(float)Math.PI / 10.0F;
-                float yAngle_left  = (entity.getMainArm() == Arm.LEFT) ? (float)Math.PI / 10.0F : (float)Math.PI / 4.5F;
-                this.setAngle(rightArm, -(float)Math.PI / 2.0F + head.pitch, yAngle_right, 0.0F);
-                this.setAngle(leftArm, -(float)Math.PI / 2.0F + head.pitch, yAngle_left, 0.0F);
             }
             case CELEBRATING -> {
                 this.setAngle(rightArm, 0.0F, 0.0F, (float)Math.PI * (5.0F / 6.0F));
@@ -217,24 +199,11 @@ public class MixinIllagerModel {
     }
 
     // 腕と武器の位置関係を調整
-    @Inject(method = "setArmAngle", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "setArmAngle", at = @At("TAIL"), cancellable = true)
     private void onSetArmAngle(net.minecraft.util.Arm arm, net.minecraft.client.util.math.MatrixStack matrices, CallbackInfo cir) {
-        ModelPart attackingArm = (arm == net.minecraft.util.Arm.LEFT)
-                ? ((IllagerModelAccessor) (Object)this).getLeftArm()
-                : ((IllagerModelAccessor) (Object)this).getRightArm();
-
-        // 武器と腕の位置関係を微調整
-        matrices.translate(
-                ((arm == net.minecraft.util.Arm.LEFT) ? 3.0F : -3.0F) / 16.0F,
-                ((((IllagerEntityModel)(Object)this).riding) ? 7.5F - ridingOffset : 7.5F) / 16.0F,
-                0.75F / 16.0F);
-        // 中心点を設定しつつ、腕と武器の角度を同期
-        matrices.multiply(
-                (new Quaternionf()).rotateZYX(attackingArm.roll, attackingArm.yaw, attackingArm.pitch),
-                attackingArm.pivotX / 320.0F,
-                attackingArm.pivotY / 56.0F,
-                0.0F);
-
-        cir.cancel();
+        double dx = (arm == net.minecraft.util.Arm.LEFT) ? -0.05 : 0.05;
+        double dy = -0.1;
+        double dz = 0.04;
+        matrices.translate(dx, dy, dz);
     }
 }

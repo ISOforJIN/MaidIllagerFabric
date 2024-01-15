@@ -1,9 +1,9 @@
 package net.yokohama_miyazawa.maidillager.configgui;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
 public class ModConfigGui extends Screen {
@@ -21,21 +21,25 @@ public class ModConfigGui extends Screen {
 
         ButtonWidget appearanceConfigButton = new ConfigButton(this.width / 2 - (200 / 2), this.height / 4, 200, 20, Config.VIEW, this);
 
-        ButtonWidget closeButton = ButtonWidget.builder(Text.translatable("maidillager.modconfiggui.closebtn"), (b) -> {
+//        ButtonWidget closeButton = ButtonWidget.builder(Text.translatable("maidillager.modconfiggui.closebtn"), (b) -> {
+//            close();
+//        })
+//                .dimensions()
+//                .build();
+
+        ButtonWidget closeButton = new ButtonWidget(this.width / 2 - (200 / 2), this.height - 50, 200, 20, Text.translatable("maidillager.modconfiggui.closebtn"), b -> {
             close();
-        })
-                .dimensions(this.width / 2 - (200 / 2), this.height - 50, 200, 20)
-                .build();
+        });
 
         addDrawableChild(appearanceConfigButton);
         addDrawableChild(closeButton);
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        renderBackgroundTexture(context);
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        renderBackgroundTexture(0);
 
-        super.render(context, mouseX, mouseY, delta);
+        super.render(matrices, mouseX, mouseY, delta);
     }
 
     @Override
@@ -52,7 +56,7 @@ public class ModConfigGui extends Screen {
         Screen currentScreen;
 
         protected ConfigButton(int x, int y, int width, int height, Config config, Screen currentScreen) {
-            super(x, y, width, height, null, null, DEFAULT_NARRATION_SUPPLIER);
+            super(x, y, width, height, null, null);
 
             this.config = config;
             this.currentScreen = currentScreen;
