@@ -73,7 +73,7 @@ public class ModConfigGui extends Screen {
         public void onPress() {
             switch (this.config) {
                 case VIEW:
-                    MinecraftClient.getInstance().setScreen(this.currentScreen);
+                    MinecraftClient.getInstance().setScreen(new ModAppearanceConfig(this.currentScreen).getScreen());
                     break;
             }
         }
