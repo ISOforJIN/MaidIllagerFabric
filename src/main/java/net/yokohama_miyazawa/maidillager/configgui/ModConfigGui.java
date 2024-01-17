@@ -1,6 +1,7 @@
 package net.yokohama_miyazawa.maidillager.configgui;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
@@ -24,10 +25,10 @@ public class ModConfigGui extends Screen {
 //        ButtonWidget closeButton = ButtonWidget.builder(Text.translatable("maidillager.modconfiggui.closebtn"), (b) -> {
 //            close();
 //        })
-//                .dimensions()
+//                .dimensions(this.width / 2 - (200 / 2), this.height - 50, 200, 20)
 //                .build();
 
-        ButtonWidget closeButton = new ButtonWidget(this.width / 2 - (200 / 2), this.height - 50, 200, 20, Text.translatable("maidillager.modconfiggui.closebtn"), b -> {
+        ButtonWidget closeButton = new ButtonWidget(this.width / 2 - (200 / 2), this.height - 50, 200, 20, Text.translatable("maidillager.modconfiggui.closebtn"), (b) -> {
             close();
         });
 
@@ -56,7 +57,7 @@ public class ModConfigGui extends Screen {
         Screen currentScreen;
 
         protected ConfigButton(int x, int y, int width, int height, Config config, Screen currentScreen) {
-            super(x, y, width, height, null, null);
+            super(x, y, width, height, null, null, EMPTY);
 
             this.config = config;
             this.currentScreen = currentScreen;
@@ -77,7 +78,7 @@ public class ModConfigGui extends Screen {
         public void onPress() {
             switch (this.config) {
                 case VIEW:
-                    MinecraftClient.getInstance().setScreen(new ModAppearanceConfig(this.currentScreen).getScreen());
+//                    MinecraftClient.getInstance().setScreen(new ModAppearanceConfig(this.currentScreen).getScreen());
                     break;
             }
         }
