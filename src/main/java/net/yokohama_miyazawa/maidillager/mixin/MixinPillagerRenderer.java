@@ -16,8 +16,8 @@ import static net.yokohama_miyazawa.maidillager.config.ModConfigs.UMU_LIKE;
 @Environment(EnvType.CLIENT)
 @Mixin(PillagerEntityRenderer.class)
 public class MixinPillagerRenderer {
-    private static final String TEXTURE() {return UMU_LIKE ? ":textures/entity/maid_pillager_umu.png" : ":textures/entity/maid_pillager.png";}
-    private static final Identifier PILLAGER() {return new Identifier(MaidIllager.MODID + TEXTURE());}
+    private static final String TEXTURE() {return UMU_LIKE ? "textures/entity/maid_pillager_umu.png" : "textures/entity/maid_pillager.png";}
+    private static final Identifier PILLAGER() {return Identifier.of(MaidIllager.MODID, TEXTURE());}
 
     @Inject(method = "getTexture", at = @At("RETURN"), cancellable = true)
     public void onGetTexture(PillagerEntity entity, CallbackInfoReturnable<Identifier> cir){
