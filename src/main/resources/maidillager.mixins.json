@@ -1,14 +1,16 @@
 {
-	"required": true,
-	"package": "net.yokohama_miyazawa.maidillager.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"client": [
-		"MixinPillagerRenderer",
-		"MixinVindicatorRenderer",
-		"MixinEvokerRenderer",
-		"MixinIllusionerRenderer",
-		"MixinIllagerModel",
-		"IllagerModelAccessor",
-		"MixinSoundSystem"
-	]
+  "required": true,
+  "package": "net.yokohama_miyazawa.maidillager.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "IllagerModelAccessor",
+    "MixinEvokerRenderer",
+    "MixinIllagerEntityRenderer",
+    "MixinIllagerEntityRenderState",
+    "MixinIllagerModel",
+    "MixinIllusionerRenderer",
+    "MixinPillagerRenderer",
+    "MixinSoundSystem",
+    "MixinVindicatorRenderer"
+  ]
 }

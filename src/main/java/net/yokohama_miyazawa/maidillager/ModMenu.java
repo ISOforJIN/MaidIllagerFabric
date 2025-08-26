@@ -6,7 +6,5 @@ import net.yokohama_miyazawa.maidillager.configgui.ModConfigGui;
 
 public class ModMenu implements ModMenuApi {
     @Override
-    public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return parent -> new ModConfigGui(parent);
-    }
+    public ConfigScreenFactory<?> getModConfigScreenFactory() { return ModConfigGui::new; }
 }

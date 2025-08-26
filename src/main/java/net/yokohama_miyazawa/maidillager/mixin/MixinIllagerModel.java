@@ -4,12 +4,14 @@ import net.minecraft.client.model.*;
 import net.minecraft.client.render.entity.model.IllagerEntityModel;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.render.entity.state.IllagerEntityRenderState;
 import net.minecraft.entity.mob.IllagerEntity;
 import net.minecraft.entity.mob.EvokerEntity;
 import net.minecraft.entity.mob.IllusionerEntity;
 import net.minecraft.entity.mob.PillagerEntity;
 import net.minecraft.entity.mob.VindicatorEntity;
 import net.minecraft.util.Arm;
+import net.yokohama_miyazawa.maidillager.util.IllagerRendererData;
 import org.joml.Quaternionf;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -36,6 +38,8 @@ public class MixinIllagerModel {
     private static final float heightOffset = 8.0F;
     // ラヴェジャー等に乗っている時は、少しだけ下半身がめり込む程度に位置を補正する
     private static final float ridingOffset = heightOffset - 2.0F;
+
+    private IllagerEntityRenderState renderState;
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void init(ModelPart root, CallbackInfo cir) {
@@ -97,8 +101,12 @@ public class MixinIllagerModel {
         cir.setReturnValue(TexturedModelData.of(modelData, 64, 64));
     }
 
-    @Inject(method = "setAngles", at = @At("HEAD"), cancellable = true)
-    private <T extends IllagerEntity> void onSetAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo cir) {
+    @Inject(method = "setAngles(Lnet/minecraft/client/render/entity/state/IllagerEntityRenderState;)V", at = @At("HEAD"), cancellable = true)
+    private <S extends IllagerEntityRenderState> void onSetAngles(S renderState, CallbackInfo info) {
+        this.renderState = renderState;
+
+        IllagerEntity entity = ((IllagerRendererData) renderState).getEntity();
+
         if (entity instanceof IllusionerEntity) {
             this.Skirt.visible = false;
             ModelPart hat = ((IllagerEntityModel)(Object)this).getHat();
@@ -112,17 +120,19 @@ public class MixinIllagerModel {
             this.forelock.visible = true;
         }
 
-        ModelPart root = ((IllagerEntityModel)(Object)this).getPart();
+        ModelPart root = ((IllagerEntityModel)(Object)this).getPart("root").get();
         ModelPart head = ((IllagerEntityModel)(Object)this).getHead();
-        head.yaw = netHeadYaw * ((float)Math.PI / 180F);
-        head.pitch = headPitch * ((float)Math.PI / 180F);
+        head.yaw = renderState.yawDegrees * ((float)Math.PI / 180F);
+        head.pitch = renderState.pitch * ((float)Math.PI / 180F);
 
         ModelPart rightArm = ((IllagerModelAccessor) (Object)this).getRightArm();
         ModelPart leftArm  = ((IllagerModelAccessor) (Object)this).getLeftArm();
         ModelPart rightLeg = ((IllagerModelAccessor) (Object)this).getRightLeg();
         ModelPart leftLeg  = ((IllagerModelAccessor) (Object)this).getLeftLeg();
 
-        if (((IllagerEntityModel)(Object)this).riding) {  // ラヴェジャーに乗っている時
+        float ageInTicks = renderState.age;
+
+        if (renderState.hasVehicle) {  // ラヴェジャーに乗っている時
             root.pivotY = -ridingOffset;
             this.setAngle(rightArm, -0.6283185F, 0.0F, 0.0F);
             this.setAngle(leftArm, -0.6283185F, 0.0F, 0.0F);
@@ -130,6 +140,10 @@ public class MixinIllagerModel {
             this.setAngle(leftLeg, -1.256637F, -0.3141593F, 0.0F);
         } else {
             root.pivotY = 0.0F;
+
+            float limbSwing = renderState.limbFrequency;
+            float limbSwingAmount = renderState.limbAmplitudeMultiplier;
+
             float xAngle = (float)Math.cos(limbSwing * 0.6662) * 2.0F * limbSwingAmount * 0.5F;
             float defaultZAngle = (float)Math.PI / 5.0F;
             float zSwing = ((float)Math.PI / 40.0F) * (float)Math.sin(3.0F * ageInTicks * ((float)Math.PI / 180F));
@@ -140,7 +154,7 @@ public class MixinIllagerModel {
             this.setAngle(leftLeg, (float)Math.cos(limbSwing * 0.6662 + Math.PI) * 1.4F * limbSwingAmount * 0.5F, 0.0F, 0.0F);
         }
 
-        IllagerEntity.State state = entity.getState();
+        IllagerEntity.State state = renderState.illagerState;
         switch(state){
             case SPELLCASTING -> {
                 this.setAngle(rightArm, 0.0F, 0.0F, (float)Math.PI * (2.0F / 3.0F));
@@ -197,7 +211,7 @@ public class MixinIllagerModel {
             }
         }
 
-        cir.cancel();
+        info.cancel();
     }
 
     private <T extends IllagerEntity> boolean isHurt(T entity) {
@@ -226,7 +240,7 @@ public class MixinIllagerModel {
         // 武器と腕の位置関係を微調整
         matrices.translate(
                 ((arm == net.minecraft.util.Arm.LEFT) ? 3.0F : -3.0F) / 16.0F,
-                ((((IllagerEntityModel)(Object)this).riding) ? 7.5F - ridingOffset : 7.5F) / 16.0F,
+                (renderState.hasVehicle ? 7.5F - ridingOffset : 7.5F) / 16.0F,
                 0.75F / 16.0F);
         // 中心点を設定しつつ、腕と武器の角度を同期
         matrices.multiply(

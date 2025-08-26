@@ -1,6 +1,7 @@
 package net.yokohama_miyazawa.maidillager.mixin;
 
 import net.minecraft.client.render.entity.VindicatorEntityRenderer;
+import net.minecraft.client.render.entity.state.IllagerEntityRenderState;
 import net.minecraft.entity.mob.VindicatorEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,8 +20,8 @@ public class MixinVindicatorRenderer {
     private static final String TEXTURE() {return UMU_LIKE ? "textures/entity/maid_vindicator_umu.png" : "textures/entity/maid_vindicator.png";}
     private static final Identifier VINDICATOR() {return Identifier.of(MaidIllager.MODID, TEXTURE());}
 
-    @Inject(method = "getTexture", at = @At("RETURN"), cancellable = true)
-    public void onGetTexture(VindicatorEntity vindicatorEntity, CallbackInfoReturnable<Identifier> cir){
+    @Inject(method = "getTexture(Lnet/minecraft/client/render/entity/state/IllagerEntityRenderState;)Lnet/minecraft/util/Identifier;", at = @At("RETURN"), cancellable = true)
+    public void onGetTexture(IllagerEntityRenderState illagerEntityRenderState, CallbackInfoReturnable<Identifier> cir){
         cir.setReturnValue(VINDICATOR());
     }
 }

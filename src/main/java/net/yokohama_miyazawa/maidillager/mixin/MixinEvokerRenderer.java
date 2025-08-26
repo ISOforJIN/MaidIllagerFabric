@@ -1,6 +1,7 @@
 package net.yokohama_miyazawa.maidillager.mixin;
 
 import net.minecraft.client.render.entity.EvokerEntityRenderer;
+import net.minecraft.client.render.entity.state.EvokerEntityRenderState;
 import net.minecraft.entity.mob.SpellcastingIllagerEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,8 +20,6 @@ public class MixinEvokerRenderer<T extends SpellcastingIllagerEntity> {
     private static final String TEXTURE() {return UMU_LIKE ? "textures/entity/maid_evoker_umu.png" : "textures/entity/maid_evoker.png";};
     private static final Identifier EVOKER_ILLAGER() {return Identifier.of(MaidIllager.MODID, TEXTURE());}
 
-    @Inject(method = "getTexture", at = @At("RETURN"), cancellable = true)
-    public void onGetTexture(T entity, CallbackInfoReturnable<Identifier> cir){
-        cir.setReturnValue(EVOKER_ILLAGER());
-    }
+    @Inject(method = "getTexture(Lnet/minecraft/client/render/entity/state/EvokerEntityRenderState;)Lnet/minecraft/util/Identifier;", at = @At("RETURN"), cancellable = true)
+    public void onGetTexture(EvokerEntityRenderState evokerEntityRenderState, CallbackInfoReturnable<Identifier> cir) { cir.setReturnValue(EVOKER_ILLAGER()); }
 }

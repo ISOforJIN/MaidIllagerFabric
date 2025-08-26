@@ -1,6 +1,7 @@
 package net.yokohama_miyazawa.maidillager.mixin;
 
 import net.minecraft.client.render.entity.IllusionerEntityRenderer;
+import net.minecraft.client.render.entity.state.IllusionerEntityRenderState;
 import net.minecraft.entity.mob.IllusionerEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -16,11 +17,11 @@ import static net.yokohama_miyazawa.maidillager.config.ModConfigs.UMU_LIKE;
 @Environment(EnvType.CLIENT)
 @Mixin(IllusionerEntityRenderer.class)
 public class MixinIllusionerRenderer {
-    private static final String TEXTURE() {return UMU_LIKE ? "textures/entity/maid_illusioner_umu.png" : "textures/entity/maid_illusioner.png";}
-    private static final Identifier ILLUSIONER() {return Identifier.of(MaidIllager.MODID, TEXTURE());}
+    private static String TEXTURE() {return UMU_LIKE ? "textures/entity/maid_illusioner_umu.png" : "textures/entity/maid_illusioner.png";}
+    private static Identifier ILLUSIONER() {return Identifier.of(MaidIllager.MODID, TEXTURE());}
 
-    @Inject(method = "getTexture", at = @At("RETURN"), cancellable = true)
-    public void onGetTexture(IllusionerEntity entity, CallbackInfoReturnable<Identifier> cir){
-        cir.setReturnValue(ILLUSIONER());
+    @Inject(method = "getTexture(Lnet/minecraft/client/render/entity/state/IllusionerEntityRenderState;)Lnet/minecraft/util/Identifier;", at = @At("RETURN"), cancellable = true)
+    public void onGetTexture(IllusionerEntityRenderState renderState, CallbackInfoReturnable<Identifier> info){
+        info.setReturnValue(ILLUSIONER());
     }
 }

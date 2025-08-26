@@ -1,6 +1,7 @@
 package net.yokohama_miyazawa.maidillager.mixin;
 
 import net.minecraft.client.render.entity.PillagerEntityRenderer;
+import net.minecraft.client.render.entity.state.IllagerEntityRenderState;
 import net.minecraft.entity.mob.PillagerEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,8 +20,8 @@ public class MixinPillagerRenderer {
     private static final String TEXTURE() {return UMU_LIKE ? "textures/entity/maid_pillager_umu.png" : "textures/entity/maid_pillager.png";}
     private static final Identifier PILLAGER() {return Identifier.of(MaidIllager.MODID, TEXTURE());}
 
-    @Inject(method = "getTexture", at = @At("RETURN"), cancellable = true)
-    public void onGetTexture(PillagerEntity entity, CallbackInfoReturnable<Identifier> cir){
+    @Inject(method = "getTexture(Lnet/minecraft/client/render/entity/state/IllagerEntityRenderState;)Lnet/minecraft/util/Identifier;", at = @At("RETURN"), cancellable = true)
+    public void onGetTexture(IllagerEntityRenderState renderState, CallbackInfoReturnable<Identifier> cir){
         cir.setReturnValue(PILLAGER());
     }
 }
